@@ -21,11 +21,23 @@ addUser=(data)=>{
         }
     })
 }
+//delete all
+
+deleteAll=()=>{
+    this.setState(()=>{
+        return {
+            userData:[]
+        }
+    })
+}
 
 render(){
       return(
             <div>
-                <Users udata={this.state.userData}/>
+                <Users udata={this.state.userData}
+                da={this.deleteAll}
+                hasData={this.state.userData.length > 0}
+                />
                 <Header hdata={this.state.headerData}/>
                 <p>MainApp Component</p>
                 <AddUser au={this.addUser}/>
@@ -40,30 +52,25 @@ render(){
 
 
 
-import {Component} from "react";
 
 
-export default class AddUser extends Component {
+import { Component } from "react";
+import User from "./User";
 
-    addUser = (e) => {
-        e.preventDefault()
 
-        const data = e.target.elements.uname.value
-         this.props.au(data)
-    }
 
-    render() {
-        return (
+
+export default class Users extends Component{
+
+    render(){
+        return(
             <div>
-                <form onSubmit={
-                    this.addUser
-                }>
-                    <input type='text' name='uname' placeholder='Enter Name' required/>
-                    <button>adduser</button>
-                    <p></p>
-                </form>
+                {
+                    this.props.udata.map((ud) =>  <User key={ud} userNew={ud}/>)
+                }
+              <button disabled={!this.props.hasData} onClick={this.props.da}>DeleteAll</button>
             </div>
-
+           
         )
     }
 }
