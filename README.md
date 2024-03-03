@@ -1,43 +1,36 @@
-import { Component } from "react";
+import {Component} from "react";
 
 
+export default class AddUser extends Component {
 
+    addUser = (e) => {
+        e.preventDefault()
 
-export default class User extends Component{
+        const data = e.target.elements.uname.value
+         this.props.au(data)
+    }
 
-    render(){
-        return(
+    render() {
+        return (
             <div>
-                {this.props.userNew}
+                <form onSubmit={
+                    this.addUser
+                }>
+                    <input type='text' name='uname' placeholder='Enter Name' required/>
+                    <button>adduser</button>
+                    <p></p>
+                </form>
             </div>
-           
+
         )
     }
 }
 
 
 
-import { Component } from "react";
-import User from "./User";
 
 
-
-
-export default class Users extends Component{
-
-    render(){
-        return(
-            <div>
-                {
-                    this.props.udata.map((ud) =>  <User userNew={ud}/>)
-                }
-              
-            </div>
-           
-        )
-    }
-}
-
+-------
 
 
 
@@ -47,22 +40,32 @@ import Footer from "./Footer";
 import AddUser from "./AddUser";
 import Users from "./Users";
 
-
-
-
 export default class MainApp extends Component{
 
-    render(){
-        const headerData='Welcome to Header'
-        const footerData='Welcome to Footer'
-        const userData=['Admin','Manager','QA']
-        return(
+    state={
+          headerData:'Welcome to Header',
+         footerData:'Welcome to Footer',
+         userData:[]
+    }
+// adding the user
+
+addUser=(data)=>{
+    this.setState((prevState)=>{
+
+        return{
+            userData:prevState.userData.concat(data)
+        }
+    })
+}
+
+render(){
+      return(
             <div>
-                <Users udata={userData}/>
-                <Header hdata={headerData}/>
+                <Users udata={this.state.userData}/>
+                <Header hdata={this.state.headerData}/>
                 <p>MainApp Component</p>
-                <AddUser/>
-                <Footer fdata={footerData}/>
+                <AddUser au={this.addUser}/>
+                <Footer fdata={this.state.footerData}/>
             </div>
            
         )
