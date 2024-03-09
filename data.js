@@ -6,6 +6,25 @@ import Users from "./Users";
 
 export default class MainApp extends Component{
 
+    componentDidMount(){
+        const json= localStorage.getItem('users')
+        const userData= JSON.parse(json)
+        if(userData){
+            this.setState(()=>{
+                return {
+                    userData
+                }
+            })
+        }
+        
+    }
+    componentDidUpdate(){
+       
+        const json=JSON.stringify(this.state.userData)
+        localStorage.setItem('users',json)
+        
+    }
+
     state={
           headerData:'Welcome to Header',
          footerData:'Welcome to Footer',
@@ -51,51 +70,6 @@ render(){
                 <p>MainApp Component</p>
                 <AddUser au={this.addUser}/>
                 <Footer fdata={this.state.footerData}/>
-            </div>
-           
-        )
-    }
-}
-
-
-
-
-import { Component } from "react";
-import User from "./User";
-
-
-
-
-export default class Users extends Component{
-
-    render(){
-        return(
-            <div>
-                {
-                    this.props.udata.map((ud) =>  <User key={ud} userNew={ud} duser={this.props.dOne}/>)
-                }
-              <button disabled={!this.props.hasData} onClick={this.props.da}>DeleteAll</button>
-            </div>
-           
-        )
-    }
-}
-
-
-
-
-import { Component } from "react";
-
-
-
-
-export default class User extends Component{
-
-    render(){
-        return(
-            <div>
-                {this.props.userNew}
-                <button onClick={()=> this.props.duser(this.props.userNew)}>Delete</button>
             </div>
            
         )
