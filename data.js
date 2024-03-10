@@ -4,24 +4,33 @@ import React, { useState } from 'react';
 function Demo2(props) {
     const [users,setUsers] = useState([])
     const [uname,setUname]=useState('')
+    const [email,setEmail]=useState('')
   
      const addUser=(e)=>{
       e.preventDefault()
       setUsers([
-          ...users,{uname}
+          ...users,{uname,email}
       ])
+      setUname('')
+      setEmail('')
+     }
+     const deleteUser=(uname)=>{
+              setUsers(users.filter((note)=> note.uname !== uname))
      }
     return (
         <div>
             {users.map((data)=>(
-                <div>
-                    {data.uname}
+                <div key={data.uname}>
+                    {data.uname}-- {data.email}
+                    <button onClick={()=> deleteUser(data.uname)}>Delete</button>
                 </div>
             ))}
             <hr/>
             <form onSubmit={addUser}>
             <input type='text' placeholder='Enter Username' value={uname}
             onChange={(e)=>setUname(e.target.value)}/>
+             <input type='email' placeholder='Enter Email' value={email}
+            onChange={(e)=>setEmail(e.target.value)}/>
             <button>Add User</button>
             </form>
         </div>
