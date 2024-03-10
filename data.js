@@ -1,26 +1,31 @@
-import React, { Component } from "react";
-import axios from "axios";
-const URL = "https://jsonplaceholder.typicode.com/users";
-export default class RestApp extends Component {
-  state={
-    users:[]
-  }
-  componentDidMount() {
-    axios
-      .get(URL)
-      .then((response) => response.data)
-      .then((data) => {
-      
-        this.setState({users:data})
-      });
-  }
-  render() {
-    return <div>
-     {this.state.users.map((udata)=> (
-       <div>
-         {udata.username} -- {udata.email}
-       </div>
-     ))}
-    </div>;
-  }
+
+import React, { useState } from 'react';
+
+function Demo2(props) {
+    const [users,setUsers] = useState([])
+    const [uname,setUname]=useState('')
+  
+     const addUser=(e)=>{
+      e.preventDefault()
+      setUsers([
+          ...users,{uname}
+      ])
+     }
+    return (
+        <div>
+            {users.map((data)=>(
+                <div>
+                    {data.uname}
+                </div>
+            ))}
+            <hr/>
+            <form onSubmit={addUser}>
+            <input type='text' placeholder='Enter Username' value={uname}
+            onChange={(e)=>setUname(e.target.value)}/>
+            <button>Add User</button>
+            </form>
+        </div>
+    );
 }
+
+export default Demo2;
