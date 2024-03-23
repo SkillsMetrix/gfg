@@ -1,25 +1,36 @@
-import React, { Component, useState, useEffect } from "react";
-import axios from "axios";
- const URL = "https://jsonplaceholder.typicode.com/users";
-function RestApp (){
-  
-  const [users,setUsers]= useState([])
-  useEffect(()=>{
-    axios
-    .get(URL)
-    .then((response) => response.data)
-    .then((data) => {
-    setUsers(data)
-    });
-  },[])
-  
-   
-    return <div>
-    {users.map((data)=>(
-      <div key={data.email}>
-       {data.name} --- {data.email}
-      </div>
-    ))}
-    </div>;
-  }
-export default RestApp
+import React, { useState, useContext } from 'react';
+import { createContext } from 'react';
+const appContext= createContext()
+
+const udata={
+    uname:'admin',email:'admin@mail.com',city:'pune',salary:23456
+}
+function ContextApp(props) {
+    const [users,setUsers]=useState(udata)
+    return (
+        <div>
+            <appContext.Provider value={users}>
+            <Employee/>
+            </appContext.Provider>
+           
+        </div>
+    );
+}
+function Employee(props) {
+    const empContext= useContext(appContext)
+    return (
+        <div>
+           Employee :{empContext.uname}
+           <Salary/>
+        </div>
+    );
+}
+function Salary(props) {
+    return (
+        <div>
+            salary
+        </div>
+    );
+}
+
+export default ContextApp;
