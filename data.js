@@ -1,36 +1,46 @@
-import React, { useState, useContext } from 'react';
-import { createContext } from 'react';
-const appContext= createContext()
+import Login from "./components/Login";
+import LandingPage from "./components/LandingPage";
 
-const udata={
-    uname:'admin',email:'admin@mail.com',city:'pune',salary:23456
-}
-function ContextApp(props) {
-    const [users,setUsers]=useState(udata)
-    return (
-        <div>
-            <appContext.Provider value={users}>
-            <Employee/>
-            </appContext.Provider>
-           
-        </div>
-    );
-}
-function Employee(props) {
-    const empContext= useContext(appContext)
-    return (
-        <div>
-           Employee :{empContext.uname}
-           <Salary/>
-        </div>
-    );
-}
-function Salary(props) {
-    return (
-        <div>
-            salary
-        </div>
-    );
+
+export const appRoutes=[
+    {path:'/',element: <LandingPage/>}
+]
+
+
+
+---------
+
+    import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+import {BrowserRouter} from 'react-router-dom'
+import reportWebVitals from './reportWebVitals';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render (
+    <BrowserRouter>
+        <App/>
+    </BrowserRouter>
+);
+reportWebVitals();
+
+
+
+
+--------
+
+    import logo from './logo.svg';
+import './App.css';
+ import { useRoutes } from 'react-router-dom'
+ import {appRoutes} from './routes'
+function App() {
+  const element= useRoutes(appRoutes)
+  return (
+    <div className="App">
+      {element}
+    </div>
+  );
 }
 
-export default ContextApp;
+export default App;
