@@ -1,10 +1,14 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function Demo2(props) {
     const [users,setUsers] = useState([])
     const [uname,setUname]=useState('')
     const [email,setEmail]=useState('')
+
+    useEffect(()=>{
+        localStorage.setItem('gfg',JSON.stringify(users))
+    },[users])
   
      const addUser=(e)=>{
       e.preventDefault()
