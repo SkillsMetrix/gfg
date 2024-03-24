@@ -1,27 +1,35 @@
-import React from 'react';
-import {Link} from 'react-router-dom'
+import React, {useState, useEffect} from 'react';
 
-function NavBar(props) {
+function Register(props) {
+    const [formData, setFormData] = useState({})
+
+    const handleData = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        })
+        console.log(formData);
+
+    }
+    const addUser = (e) => {
+        e.preventDefault()
+        const data = JSON.stringify(formData)
+        localStorage.setItem('gfg', data)
+    }
+
     return (
-        <div className='container'>
+        <div>
 
-
-            <ul class="nav">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">
-                        <Link to="/login">Login</Link>
-                    </a>
-
-                </li>
-                <li class="nav-item">
-
-                    <a class="nav-link active" aria-current="page" href="#">
-                        <Link to="/register">Register</Link>
-                    </a>
-                </li>
-            </ul>
+            <hr/>
+            <form onSubmit={addUser}>
+                <input type='text' placeholder='Enter Username' name='uname'
+                    onChange={handleData}/>
+                <input type='email' placeholder='Enter Email' name='email'
+                    onChange={handleData}/>
+                <button>Add User</button>
+            </form>
         </div>
     );
 }
 
-export default NavBar;
+export default Register;
