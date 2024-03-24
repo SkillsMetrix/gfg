@@ -1,46 +1,55 @@
 import Login from "./components/Login";
 import LandingPage from "./components/LandingPage";
+import Register from "./components/Register";
+import Portfolio from "./components/Portfolio";
 
 
 export const appRoutes=[
-    {path:'/',element: <LandingPage/>}
+   
+    {path:'/login', element: <Login/>},
+    {path:'/register',element: <Register/>},
+    {path:'/portfolio',element: <Portfolio/>}
 ]
-
-
 
 ---------
 
+
     import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import {BrowserRouter} from 'react-router-dom'
-import reportWebVitals from './reportWebVitals';
+import NavBar from './NavBar';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render (
-    <BrowserRouter>
-        <App/>
-    </BrowserRouter>
-);
-reportWebVitals();
+function LandingPage(props) {
+    return (
+        <div>
+
+            <NavBar/>
+            <hr/>
 
 
-
-
---------
-
-    import logo from './logo.svg';
-import './App.css';
- import { useRoutes } from 'react-router-dom'
- import {appRoutes} from './routes'
-function App() {
-  const element= useRoutes(appRoutes)
-  return (
-    <div className="App">
-      {element}
-    </div>
-  );
+        </div>
+    );
 }
 
-export default App;
+export default LandingPage;
+
+-----
+
+    import React from 'react';
+import {Link} from 'react-router-dom'
+
+function NavBar(props) {
+    return (
+        <div>
+            
+ <Link to="/login">Login</Link>
+ <Link to="/register">Register</Link>
+        </div>
+    );
+}
+
+export default NavBar;
+
+
+
+-------
+
+    
