@@ -1,76 +1,55 @@
-const authReducer = (state =false, action) => {
-    switch (action.type) {
-        case 'LOG_IN':
-            return true
-        case 'LOG_OUT':
-            return false
-        default:
-            return state
-    }
 
-}
-export default authReducer
------
+var express= require('express')
+const cors= require('cors')
+const bp= require('body-parser')
 
+var app=  express()
+app.use(bp.json())
 
-    
-import { combineReducers } from 'redux'
-import counterReducer from './counterReducer'
-import authReducer from './authReducer'
-const rootReducer= combineReducers({
-    counter:counterReducer,
-    auth:authReducer
+const userdata=[]
+var uid=1
+app.use(cors())
+app.get("/loadusers",(req,res)=>{
+res.send(userdata)
 })
 
-export default rootReducer
+app.get("/loaduser/:id",(req,res)=>{
 
--------
-
-
+const uid= parseInt(req.params.id)
+var mtd
+userdata.forEach(function(todo) {
+    if(uid== todo.id) {
+        mtd= todo
+    }
+})
+if(mtd){
+    res.json(mtd)
+}else{
+    res.send('user not found...!')
+}
+    
     
 
-export function login(){
-    return {
-        type: 'LOG_IN'
-    }
-}
-export function logout(){
-    return {
-        type: 'LOG_OUT'
-    }
-}
+})
+app.post("/adduser",(req,res)=>{
+    var data= req.body
+    
+    data.id=uid++
 
--------
-
-
+    userdata.push(data)
+    res.send('user added')
+    
     
 
-import React from 'react';
-import { useSelector, useDispatch } from 'react-redux'
-import { login, logout } from '../redux/actions/authActions';
-function AuthComponent(props) {
-    const auth= useSelector(state => state.auth)
-    const dispatch=useDispatch()
+
+})
+
+app.use(express.static('public'))
 
 
+app.listen(4000,()=>{
 
+    console.log('server is ready....!!!');
+    
+})
 
-    return (
-        <div>
-            <button onClick={()=> dispatch(login())}>Login</button>
-            <button onClick={()=> dispatch(logout())}>Logout</button>
-
-            <hr/>
-            <p>Login To see the special Benifits and Discounts...!</p>
-
-            <hr/>
-            {auth ? (
-                <p>Congratulations ...! you got 50% discount .. use 67UIPT to apply for</p>
-            ) : (
-                <p>...  </p>
-            )}
-        </div>
-    );
-}
-
-export default AuthComponent;
