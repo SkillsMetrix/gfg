@@ -17,3 +17,32 @@ module.exports=(req,res,next) =>{
         res.status(403).send({"error":true,"message":"No Token Found"})
     }
 }
+
+
+
+
+
+
+
+const express= require('express')
+const json= require('jsonwebtoken')
+const router= express.Router()
+
+const config= require('./config')
+
+const app=express()
+const bp= require('body-parser')
+
+
+app.use(bp.json())
+
+router.use(require("./tokenChecker"))
+router.get("/secure",(req,res)=>{
+    res.send('private and secured route')
+})
+
+app.use("/api",router)
+app.listen(4000,()=>{
+console.log('server is ready');
+
+})
