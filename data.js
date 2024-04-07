@@ -1,55 +1,19 @@
+const jwt= require('jsonwebtoken')
 
-var express= require('express')
-const cors= require('cors')
-const bp= require('body-parser')
+const config= require('./config')
 
-var app=  express()
-app.use(bp.json())
+module.exports=(req,res,next) =>{
 
-const userdata=[]
-var uid=1
-app.use(cors())
-app.get("/loadusers",(req,res)=>{
-res.send(userdata)
-})
-
-app.get("/loaduser/:id",(req,res)=>{
-
-const uid= parseInt(req.params.id)
-var mtd
-userdata.forEach(function(todo) {
-    if(uid== todo.id) {
-        mtd= todo
+    const token=req.header['x-access-token']
+    if(token) {
+        jwt.verify(token,config.secret,function(err,decoded){
+            if(err){
+                return res.status(401).json({"error":true,"message":"UnAuthorized Access"})
+            }
+            req.decoded= decoded
+            next()
+        })
+    }else {
+        res.status(403).send({"error":true,"message":"No Token Found"})
     }
-})
-if(mtd){
-    res.json(mtd)
-}else{
-    res.send('user not found...!')
 }
-    
-    
-
-})
-app.post("/adduser",(req,res)=>{
-    var data= req.body
-    
-    data.id=uid++
-
-    userdata.push(data)
-    res.send('user added')
-    
-    
-
-
-})
-
-app.use(express.static('public'))
-
-
-app.listen(4000,()=>{
-
-    console.log('server is ready....!!!');
-    
-})
-
