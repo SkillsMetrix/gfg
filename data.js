@@ -1,4 +1,54 @@
-var request = require('request')
+var weather = require('./Weather.js')
+var location = require('./location.js')
+var argv = require('yargs').option('location', {
+    description: 'Location to get the weather for city',
+    demand: false,
+    alias: 'l',
+    type: 'string'
+}).help('help').argv
+
+if (typeof argv.l === 'string' && argv.l.length > 0) {
+    console.log('Location Recieved from client');
+    weather(argv.l, function (callback) {
+        console.log(callback);
+
+    })
+} else {
+    console.log('No City Found....  detecting the location!!!!!!!!!!!');
+    location(function (location) {
+        if (location) {
+            weather(location.city, function (callback) {
+                console.log(callback);
+            })
+        }
+    })
+}
+----
+
+
+ var request = require('request')
+
+var URL = 'http://ipinfo.io'
+module.exports = function (callback) {
+
+    request({
+        url: URL,
+        json: true
+    }, function (error, response, body) {
+        if (error) {
+            callback('unable to find location');
+
+        } else {
+            callback(body);
+
+        }
+    })
+}
+
+
+
+----
+ var request = require('request')
 
 
 module.exports= function(location,callback){
@@ -12,26 +62,8 @@ request({
         callback('something went wrong');
         
     }else {
-        callback('Its ' + body.main.temp + ' in ' + body.name);
+        callback(`Its  ${body.main.temp}  and humidity ${body.main.humidity}  in ${body.name}`);
         
     }
 })
 }
-
--------
-
-    var weather = require('./Weather.js')
-var argv= require('yargs')
-.option('location',{
-    description:'Location to get the weather for city',
-    demand:true,
-    alias:'l',
-    type:'string'
-})
-.help('help')
-.argv
-
-weather(argv.l,function (callback) {
-    console.log(callback);
-
-})
