@@ -1,43 +1,34 @@
-import React from 'react';
-import {useSelector} from 'react-redux'
-import { Link } from 'react-router-dom'
-function ProductComponent(props) {
+import React, { useEffect } from 'react';
+import axios from 'axios'
+import { useSelector, useDispatch } from 'react-redux'
+import { useParams } from 'react-router-dom'
 
+function ProductDetails(props) {
+    const product=useSelector((state) => state.product)
+    const {title,price,category,image,description}=product
+    const dispatch=useDispatch()
+    const {productid} =useParams()
 
-    const products = useSelector(state => state.allProducts.products)
-    const renderList = products.map((product) => {
-        const {
-            id,
-            title,
-            image,
-            price,
-            category
-        } = product
-        return (
-
-            <div className="four wide column">
-                <Link to={`/productdetails/${id}`}>
-                <div className="ui link cards">
-                    <div className="card">
-                        <div className="image">
-                            <img src={image}/>
-                        </div>
-                        <div className="content">
-                            <div className="header">
-                                {title}</div>
-
-                            <div className="meta price ">4{price}</div>
-                            <div className="meta">
-                                {category}</div>
-                        </div>
-                    </div>
-                </div>
-                </Link>
-
-            </div>
-        );
-    })
-    return <>{renderList}</>
+    const loadProducts = async () => {
+        const response = await axios.get(`https://fakestoreapi.com/products/${productid}`)
+         //dispatch(setProducts(response.data))
+         console.log(response);
+         
+}
+    useEffect(() => {
+        loadProducts()
+    }, [])
+ 
+     
+    
+    return (
+        <div>
+            <p>
+            productdetails
+            </p>
+           
+        </div>
+    );
 }
 
-export default ProductComponent;
+export default ProductDetails;
