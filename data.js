@@ -1,8 +1,76 @@
-import React, {useEffect} from 'react';
+import {ActionTypes} from "../constants/action-types"
+
+const initialState = {
+    products: []
+}
+export const productReducer = (state = initialState, {type, payload}) => {
+    switch (type) {
+        case ActionTypes.SET_PRODUCTS:
+            return {...state,products:payload}
+            case ActionTypes.FETCH_PRODUCTS:
+                return {...state,products:payload}
+        default:
+            return state
+    }
+}
+
+export const selectedProduct = (state ={}, {type, payload}) => {
+    switch (type) {
+        case ActionTypes.SELECTED_PRODUCTS:
+            return {...state,...payload}
+        default:
+            return state
+    }
+}
+
+
+-----
+
+
+    import { ActionTypes } from "../constants/action-types"
+import axios from "axios"
+import fakeStore from "../../apis/fakeStore"
+
+
+
+
+export const fetchProducts=()=>async(dispatch)=>{
+      const response=await fakeStore.get('/products')
+     dispatch({type:ActionTypes.FETCH_PRODUCTS,payload:response.data})
+     
+}
+export const fetchProduct=(id)=>async(dispatch)=>{
+    const response=await fakeStore.get(`/products/${id}`)
+   dispatch({type:ActionTypes.FETCH_PRODUCTS,payload:response.data})
+   
+}
+
+export const setProducts=(products)=>{
+    return {
+    type:ActionTypes.SET_PRODUCTS,
+    payload:products
+    }
+}
+
+
+
+export const selectedProduct=(product)=>{
+    return {
+    type:ActionTypes.SELECTED_PRODUCTS,
+    payload:product
+    }
+}
+
+
+
+
+-----
+
+    import React, {useEffect} from 'react';
 import axios from 'axios'
 import {useSelector, useDispatch} from 'react-redux'
 import {useParams} from 'react-router-dom'
-import {selectedProduct} from '../redux/actions/productActions';
+import {selectedProduct, fetchProduct} from '../redux/actions/productActions';
 
 function ProductDetails(props) {
     const product = useSelector((state) => state.product)
@@ -16,14 +84,9 @@ function ProductDetails(props) {
     const dispatch = useDispatch()
     const {productid} = useParams()
 
-    const loadProducts = async () => {
-        const response = await axios.get(`https://fakestoreapi.com/products/${productid}`)
-        // dispatch(setProducts(response.data))
-        dispatch(selectedProduct(response.data))
-
-    }
+    
     useEffect(() => {
-        loadProducts()
+       dispatch(fetchProduct(productid))
     }, [])
 
 
