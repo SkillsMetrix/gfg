@@ -1,74 +1,9 @@
-
-import { render, screen } from '@testing-library/react';
-import Login, { validateEmail } from './Login';
-import userEvent from '@testing-library/user-event'
-
-describe('Test the suite',()=>{
-    test('render the button',async()=>{
-         render(<Login/>)
-         const buttonList= await screen.findAllByRole('button')
-         expect(buttonList).toHaveLength(2)
-
-    })
-    test('check email value',()=>{
-        const email='admin@mail.com'
-        expect(validateEmail(email)).toBe(true)
-    })
-    test('check value',()=>{
-        render(<Login/>)
-        const email=screen.getByPlaceholderText('Enter email')
-        userEvent.type(email,"admin@mail.com")
-        expect(email.value).toMatch('admin@mail.com')
-    })
-
-    test('check password',()=>{
-        render(<Login/>)
-        const password= screen.getByPlaceholderText('Password')
-
-        
-        expect(password).toHaveAttribute("type","password")
-    })
-    test('value chack',async()=>{
-
-        render(<Login/>)
-        const email=screen.getByPlaceholderText('Enter email')
-        const password= screen.getByPlaceholderText('Password')
-        const buttonList= await screen.findAllByRole('button')
-        userEvent.type(email,"adminmailcom")
-        userEvent.type(password,"1234")
-        userEvent.click(buttonList[0])
-        const error= screen.getByText("Email is not valid")
-        expect(error).toBeInTheDocument()
-    })
-
-})
-
-
-
-
-
-        // jest-dom adds custom jest matchers for asserting on DOM nodes.
-// allows you to do things like:
-// expect(element).toHaveTextContent(/react/i)
-// learn more: https://github.com/testing-library/jest-dom
-import "@testing-library/jest-dom";
-import "@testing-library/jest-dom";
-
-//***Add This***
-const originalError = console.error;
-beforeAll(() => {
-  console.error = (...args) => {
-    if (
-      /Warning: ReactDOM.render is no longer supported in React 18./.test(
-        args[0]
-      )
-    ) {
-      return;
-    }
-    originalError.call(console, ...args);
-  };
-});
-
-afterAll(() => {
-  console.error = originalError;
-});
+db.Student.insert({StudentName : "Vijay",Section : "A",Marks:70,Subject:["Hindi","English","Math"]})
+db.Student.insert({StudentName : "Gaurav",Section : "A",Marks:90,Subject:["English"]})
+db.Student.insert({StudentName : "Ajay",Section : "A",Marks:70,Subject:["Math"]})
+db.Student.insert({StudentName : "Ankur",Section : "B",Marks:10,Subject:["Hindi"]})
+db.Student.insert({StudentName : "Sunil",Section : "B",Marks:70,Subject:["Math"]})
+db.Student.insert({StudentName : "Preeti",Section : "C",Marks:80,Subject:["Hindi","English"]})
+db.Student.insert({StudentName : "Anuj",Section : "C",Marks:50,Subject:["English"]})
+db.Student.insert({StudentName : "Palka",Section : "D",Marks:40,Subject:["Math"]})
+db.Student.insert({StudentName : "Soniya",Section : "D",Marks:20,Subject:["English","Math"]})
