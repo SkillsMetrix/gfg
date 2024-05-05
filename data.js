@@ -1,9 +1,28 @@
-db.Student.insert({StudentName : "Vijay",Section : "A",Marks:70,Subject:["Hindi","English","Math"]})
-db.Student.insert({StudentName : "Gaurav",Section : "A",Marks:90,Subject:["English"]})
-db.Student.insert({StudentName : "Ajay",Section : "A",Marks:70,Subject:["Math"]})
-db.Student.insert({StudentName : "Ankur",Section : "B",Marks:10,Subject:["Hindi"]})
-db.Student.insert({StudentName : "Sunil",Section : "B",Marks:70,Subject:["Math"]})
-db.Student.insert({StudentName : "Preeti",Section : "C",Marks:80,Subject:["Hindi","English"]})
-db.Student.insert({StudentName : "Anuj",Section : "C",Marks:50,Subject:["English"]})
-db.Student.insert({StudentName : "Palka",Section : "D",Marks:40,Subject:["Math"]})
-db.Student.insert({StudentName : "Soniya",Section : "D",Marks:20,Subject:["English","Math"]})
+db.Student.aggregate ([
+   {
+      "$group":
+      {
+         "_id":
+         {
+            "Section" : "$Section"
+         },
+         "TotalMarks":
+         {
+            "$sum": "$Marks"
+         },
+         "Count":{ "$sum" : 1},
+         "Average" : {"$avg" : "$Marks"}
+      }
+   },
+   {
+       "$project" : 
+       {
+           "SectionName" : "$_id.Section",
+           "Total" : "$TotalMarks"
+       }
+   },
+   {
+       "$sort":{"SectionName":-1}
+   }
+])
+
